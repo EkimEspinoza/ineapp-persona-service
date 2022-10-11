@@ -1,9 +1,16 @@
-package pe.ineapp.ineapppersonaservice.Persona;
+package pe.ineapp.ineapppersonaservice.infraestructura.controller;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.catalina.connector.Request;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import pe.ineapp.ineapppersonaservice.dominio.entity.Persona;
+import pe.ineapp.ineapppersonaservice.aplicacion.service.PersonaService;
+import pe.ineapp.ineapppersonaservice.infraestructura.repository.PersonaRepository;
+import pe.ineapp.ineapppersonaservice.infraestructura.request.UserRequest;
+import pe.ineapp.ineapppersonaservice.infraestructura.response.BasicResponse;
+import pe.ineapp.ineapppersonaservice.infraestructura.response.UserResponse;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -13,29 +20,44 @@ import java.util.List;
 @RequestMapping("/persona")
 public class PersonaController {
 
+    @Autowired
+    private PersonaService personaService;
+
+
+
     @GetMapping
-    @RequestMapping("/getAll")
-    public List<Persona> getPersona(){
+    @RequestMapping("/getall")
+    public UserResponse getAll(){
+        return personaService.getAll();
+    }
 
-        LocalDate date = LocalDate.of(2020, Month.APRIL,4);
-        Persona persona = Persona.builder()
-                .id(1L)
-                .name("Christian")
-                .lastname("Espinoza")
-                .dni("45966557")
-                .email("cespinoza@central.com.pe")
-                .birthDate(date).build();
-        Persona persona1 = Persona.builder()
-                .id(2L)
-                .name("Mathias")
-                .lastname("Espinoza")
-                .dni("89349483")
-                .email("mespinoza@central.com.pe")
-                .birthDate(date).build();
+    @GetMapping
+    @RequestMapping("/getbydni")
+    public UserResponse getByDni(@RequestParam String dni){
+        return personaService.getByDni(dni) ;
+    }
 
-        return List.of(persona,persona1);
+    @PostMapping
+    @RequestMapping("/addUser")
+    public ResponseEntity<BasicResponse> adduser(@RequestBody UserRequest request){
+        BasicResponse response = personaService.addUser(request);
+        return ResponseEntity.status(response.getCode()).body(response);
+
     }
 
 
+    @PutMapping
+    @RequestMapping("/updateuser")
+    public ResponseEntity<BasicResponse> updateUser(@RequestBody UserRequest request,
+                                                        @RequestParam String dni){
+        BasicResponse response = personaService.updateUser(request,dni);
+        return ResponseEntity.status(response.getCode()).body(response);
+    }
 
+    @DeleteMapping
+    @RequestMapping("/deleteuser")
+    public ResponseEntity<BasicResponse> deleteUser(@RequestParam String dni){
+        BasicResponse response = personaService.deleteUser(dni);
+        return ResponseEntity.status(response.getCode()).body(response);
+    }
 }

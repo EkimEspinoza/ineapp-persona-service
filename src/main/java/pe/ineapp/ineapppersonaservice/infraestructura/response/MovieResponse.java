@@ -2,17 +2,13 @@ package pe.ineapp.ineapppersonaservice.infraestructura.response;
 
 import lombok.Builder;
 import lombok.Data;
-import pe.ineapp.ineapppersonaservice.dominio.entity.Persona;
+import pe.ineapp.ineapppersonaservice.dominio.entity.Movie;
 
 import java.util.List;
 
-
 @Builder
 @Data
-
-public class UserResponse {
-    private List<Persona> personaList;
+public class MovieResponse {
+    private List<Movie> movieList;
     private BasicResponse basicResponse;
-
-
 }

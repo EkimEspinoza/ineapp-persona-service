@@ -1,4 +1,4 @@
-package pe.ineapp.ineapppersonaservice.Persona;
+package pe.ineapp.ineapppersonaservice.dominio.entity;
 
 
 import lombok.*;
@@ -45,5 +45,6 @@ public class Persona {
     String dni;
     String email;
     LocalDate birthDate;
+
 
 }
